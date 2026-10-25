@@ -19,9 +19,9 @@ h2{font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.05;letter-spacing:-.04em;fon
 .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:500;padding:14px 32px;border-radius:999px;text-decoration:none;border:none;font-size:1rem;cursor:pointer;transition:transform .25s,box-shadow .25s,background .25s;box-shadow:0 1px 2px rgba(11,15,25,.08),0 8px 20px rgba(29,78,216,.18)}
 .btn:hover{transform:translateY(-2px);background:#1E40AF}
 /* Floating emojis */
-.float{display:inline-block;position:relative;will-change:transform}
+.float{display:inline-block;position:relative;will-change:transform;line-height:0}
 .float .em{display:inline-block;animation:bob 5s ease-in-out infinite}
-.float::after{content:"";position:absolute;left:20%;right:20%;bottom:-10%;height:10%;border-radius:50%;background:rgba(11,15,25,.14);filter:blur(5px);animation:shadow 5s ease-in-out infinite}
+.float::after{content:"";position:absolute;left:20%;right:20%;bottom:5%;height:7%;border-radius:50%;background:rgba(11,15,25,.14);filter:blur(5px);animation:shadow 5s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes shadow{0%,100%{transform:scaleX(1);opacity:.9}50%{transform:scaleX(.7);opacity:.5}}
 .hero-dog{font-size:clamp(3.6rem,10vw,5.5rem);margin-bottom:28px}
@@ -34,7 +34,7 @@ section>*:not(.deco){position:relative;z-index:1}
 .brand{display:inline-flex;align-items:center;gap:8px}.brand .mascot{width:26px;height:26px;animation:none}
 .deco .mascot.book{width:clamp(56px,9vw,84px);height:clamp(56px,9vw,84px)}
 .thanks-dog .mascot{width:96px;height:96px}
-.hero-dog::after{bottom:4%;height:6%}.brand .mascot{display:inline-block}
+.hero-dog{line-height:0}.hero-dog::after{bottom:2%;height:6%;left:30%;right:30%}.brand .mascot{display:inline-block}
 #book .deco{opacity:1}
 @media(max-width:600px){#book .deco{top:6%!important;right:6%!important}}
 /* Reveal */
@@ -74,27 +74,21 @@ footer small{display:block;margin-top:6px;opacity:.8}
 </style></head><body>
 
 <nav><a href="#top" class="brand"><svg class="em mascot tiny" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/></g></svg>Happy Paws Walks</a><a class="mini" href="#book">Book</a></nav>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g></svg>Happy Paws Walks</a><a class="mini" href="#book">Book</a></nav>
 
 <section id="top">
   <span class="float deco" data-speed="0.3" style="top:22%;left:12%"><svg class="em deco-svg" viewBox="70 75 50 40"><g transform="translate(78 82) rotate(-25)"><rect x="0" y="6" width="30" height="8" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><rect x="2" y="7.5" width="26" height="5" fill="#fff"/></g></svg></span>
   <span class="float deco" data-speed="-0.3" style="bottom:22%;right:12%"><svg class="em deco-svg" style="animation-delay:-2s" viewBox="-15 -16 30 30"><g transform="translate(0 0) scale(1)" fill="#1D4ED8"><ellipse cx="0" cy="6" rx="8" ry="7"/><circle cx="-9" cy="-4" r="3.6"/><circle cx="-3" cy="-10" r="3.6"/><circle cx="4" cy="-10" r="3.6"/><circle cx="10" cy="-4" r="3.6"/></g></svg></span>
   <div class="float hero-dog reveal scale"><svg class="em mascot " viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><path d="M14 92 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/><g transform="translate(78 82) rotate(-25)"><rect x="0" y="6" width="30" height="8" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><rect x="2" y="7.5" width="26" height="5" fill="#fff"/></g></g></svg></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M8 80 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/><g transform="translate(78 82) rotate(-25)"><rect x="0" y="6" width="30" height="8" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="2" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="5" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><circle cx="28" cy="15" r="5" fill="#fff" stroke="#1D4ED8" stroke-width="3"/><rect x="2" y="7.5" width="26" height="5" fill="#fff"/></g></g></svg></div>
   <p class="eyebrow reveal d1">North Kellyville dog walking</p>
   <h1 class="reveal d2">Happy Paws Walks</h1><!-- business name -->
   <p class="lead reveal d3">Friendly, local dog walks around North Kellyville. Happy tails, tired legs, and lots of sniffs along the way.</p>
@@ -110,89 +104,49 @@ footer small{display:block;margin-top:6px;opacity:.8}
   <h2 class="reveal d1">Pick your pup's adventure.</h2>
   <div class="grid">
     <div class="card reveal"><div class="float"><svg class="em mascot " viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><g transform="translate(18 96) scale(0.8)" fill="#1D4ED8"><ellipse cx="0" cy="6" rx="8" ry="7"/><circle cx="-9" cy="-4" r="3.6"/><circle cx="-3" cy="-10" r="3.6"/><circle cx="4" cy="-10" r="3.6"/><circle cx="10" cy="-4" r="3.6"/></g><g transform="translate(104 24) scale(0.7)" fill="#1D4ED8"><ellipse cx="0" cy="6" rx="8" ry="7"/><circle cx="-9" cy="-4" r="3.6"/><circle cx="-3" cy="-10" r="3.6"/><circle cx="4" cy="-10" r="3.6"/><circle cx="10" cy="-4" r="3.6"/></g></g></svg></div><h3>30-min walk</h3><p>A quick stroll around the block, perfect for busy days.</p><span class="price">$XX</span></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><g transform="translate(18 96) scale(0.8)" fill="#1D4ED8"><ellipse cx="0" cy="6" rx="8" ry="7"/><circle cx="-9" cy="-4" r="3.6"/><circle cx="-3" cy="-10" r="3.6"/><circle cx="4" cy="-10" r="3.6"/><circle cx="10" cy="-4" r="3.6"/></g><g transform="translate(104 24) scale(0.7)" fill="#1D4ED8"><ellipse cx="0" cy="6" rx="8" ry="7"/><circle cx="-9" cy="-4" r="3.6"/><circle cx="-3" cy="-10" r="3.6"/><circle cx="4" cy="-10" r="3.6"/><circle cx="10" cy="-4" r="3.6"/></g></g></svg></div><h3>30-min walk</h3><p>A quick stroll around the block, perfect for busy days.</p><span class="price">$XX</span></div>
     <div class="card reveal d1"><div class="float"><svg class="em mascot " style="animation-delay:-1.6s" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><path d="M30 92 Q60 104 90 92" fill="none" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="100" r="4" fill="#fff" stroke="#1D4ED8" stroke-width="2.5"/><path d="M62 103 Q90 118 112 96" fill="none" stroke="#5B6474" stroke-width="3" stroke-linecap="round"/><rect x="104" y="86" width="12" height="12" rx="4" fill="none" stroke="#5B6474" stroke-width="3"/></g></svg></div><h3>60-min walk</h3><p>A big adventure through local parks and trails.</p><span class="price">$XX</span></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M30 92 Q60 104 90 92" fill="none" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="100" r="4" fill="#fff" stroke="#1D4ED8" stroke-width="2.5"/><path d="M62 103 Q90 118 112 96" fill="none" stroke="#5B6474" stroke-width="3" stroke-linecap="round"/><rect x="104" y="86" width="12" height="12" rx="4" fill="none" stroke="#5B6474" stroke-width="3"/></g></svg></div><h3>60-min walk</h3><p>A big adventure through local parks and trails.</p><span class="price">$XX</span></div>
     <div class="card reveal d2"><div class="float"><svg class="em mascot " style="animation-delay:-3.2s" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><g transform="translate(88 70) scale(.42)"><ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#5B6474"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#5B6474"/><circle cx="60" cy="60" r="38" fill="#F7F8FA" stroke="#5B6474" stroke-width="5"/><circle cx="46" cy="56" r="5" fill="#0B0F19"/><circle cx="74" cy="56" r="5" fill="#0B0F19"/><ellipse cx="60" cy="70" rx="7" ry="5" fill="#0B0F19"/></g></g></svg></div><h3>Group walk</h3><p>A fun walk with a few friendly dog mates.</p><span class="price">$XX</span></div>
-  </div>
-</section>
-
-<section>
-  <p class="eyebrow reveal">How it works</p>
-  <h2 class="reveal d1">Three steps to walkies.</h2>
-  <div class="grid">
-    <div class="card reveal"><div class="step">1</div><h3>Get in touch</h3><p>Fill in the form below and tell me about your dog.</p></div>
-    <div class="card reveal d1"><div class="step">2</div><h3>Meet &amp; greet</h3><p>We meet so your pup can get to know me.</p></div>
-    <div class="card reveal d2"><div class="step">3</div><h3>Walkies</h3><p>Your dog comes home happy and tired.</p></div>
-  </div>
-</section>
-
-<section class="alt">
-  <p class="eyebrow reveal">Why Happy Paws?</p>
-  <h2 class="reveal d1">Treated like family.</h2>
-  <div class="grid">
-    <div class="card reveal"><div class="float"><svg class="em mascot " viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><g fill="#0B0F19"><rect x="34" y="47" width="22" height="15" rx="6"/><rect x="64" y="47" width="22" height="15" rx="6"/><rect x="54" y="51" width="12" height="3"/></g><path d="M37 51 l6 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M67 51 l6 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g></svg></div><h3>Reliable</h3><p>On time, every time, rain or shine.</p></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><g transform="translate(88 70) scale(.42)"><path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><g fill="#0B0F19"><rect x="34" y="47" width="22" height="15" rx="6"/><rect x="64" y="47" width="22" height="15" rx="6"/><rect x="54" y="51" width="12" height="3"/></g><path d="M37 51 l6 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M67 51 l6 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g></svg></div><h3>Reliable</h3><p>On time, every time, rain or shine.</p></div>
     <div class="card reveal d1"><div class="float"><svg class="em mascot " style="animation-delay:-1.6s" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><g transform="translate(86 76)"><path d="M0 12 L14 0 L28 12 V32 H0z" fill="#fff" stroke="#1D4ED8" stroke-width="3" stroke-linejoin="round"/><rect x="10" y="18" width="8" height="14" fill="#1D4ED8"/></g></g></svg></div><h3>Local</h3><p>I live here and know the best walking spots.</p></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><g transform="translate(86 76)"><path d="M0 12 L14 0 L28 12 V32 H0z" fill="#fff" stroke="#1D4ED8" stroke-width="3" stroke-linejoin="round"/><rect x="10" y="18" width="8" height="14" fill="#1D4ED8"/></g></g></svg></div><h3>Local</h3><p>I live here and know the best walking spots.</p></div>
     <div class="card reveal d2"><div class="float"><svg class="em mascot " style="animation-delay:-3.2s" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><path d="M14 92 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/></g></svg></div><h3>Loves dogs</h3><p>Every dog gets treated like my own best friend.</p></div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M8 80 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/></g></svg></div><h3>Loves dogs</h3><p>Every dog gets treated like my own best friend.</p></div>
   </div>
 </section>
 
 <section id="book">
   <span class="float deco" data-speed="-0.25" style="top:14%;right:12%"><svg class="em mascot book" viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><path d="M30 92 Q60 104 90 92" fill="none" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="100" r="4" fill="#fff" stroke="#1D4ED8" stroke-width="2.5"/><path d="M62 103 Q90 118 112 96" fill="none" stroke="#5B6474" stroke-width="3" stroke-linecap="round"/><rect x="104" y="86" width="12" height="12" rx="4" fill="none" stroke="#5B6474" stroke-width="3"/></g></svg></span>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M30 92 Q60 104 90 92" fill="none" stroke="#1D4ED8" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="100" r="4" fill="#fff" stroke="#1D4ED8" stroke-width="2.5"/><path d="M62 103 Q90 118 112 96" fill="none" stroke="#5B6474" stroke-width="3" stroke-linecap="round"/><rect x="104" y="86" width="12" height="12" rx="4" fill="none" stroke="#5B6474" stroke-width="3"/></g></svg></span>
   <p class="eyebrow reveal">Booking</p>
   <h2 class="reveal scale">Book a walk.</h2>
   <form id="f" class="reveal d1">
@@ -204,14 +158,11 @@ footer small{display:block;margin-top:6px;opacity:.8}
     <button class="btn" type="submit">Send request</button>
   </form>
   <div id="thanks"><div class="float thanks-dog"><svg class="em mascot " viewBox="0 0 120 120" aria-hidden="true"><g>
-<ellipse cx="30" cy="42" rx="14" ry="24" transform="rotate(20 30 42)" fill="#1D4ED8"/><ellipse cx="90" cy="42" rx="14" ry="24" transform="rotate(-20 90 42)" fill="#1D4ED8"/>
-<circle cx="60" cy="60" r="38" fill="#fff" stroke="#1D4ED8" stroke-width="4"/>
-<ellipse cx="60" cy="74" rx="17" ry="13" fill="#EEF3FF"/>
-<circle cx="46" cy="56" r="4.5" fill="#0B0F19"/><circle cx="74" cy="56" r="4.5" fill="#0B0F19"/>
-<circle cx="47.5" cy="54.5" r="1.4" fill="#fff"/><circle cx="75.5" cy="54.5" r="1.4" fill="#fff"/>
-<ellipse cx="60" cy="68" rx="6" ry="4.5" fill="#0B0F19"/>
-<path d="M52 76 Q60 83 68 76" fill="none" stroke="#0B0F19" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M56 79 h8 v5 a4 4 0 0 1 -8 0z" fill="#F28CA6"/><path d="M14 92 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/></g></svg></div><br>Thanks! I'll be in touch soon to say hi to your pup.</div>
+<path d="M60 40 C50 22 18 22 16 50 C14 72 40 88 60 104 C80 88 106 72 104 50 C102 22 70 22 60 40 Z" fill="#1D4ED8"/>
+<path d="M34 46 C36 38 42 35 48 38" fill="none" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/><ellipse cx="22" cy="40" rx="8" ry="15" transform="rotate(28 22 40)" fill="#1E3A8A"/><ellipse cx="98" cy="40" rx="8" ry="15" transform="rotate(-28 98 40)" fill="#1E3A8A"/>
+<ellipse cx="44" cy="102" rx="7" ry="5" fill="#1E3A8A"/><ellipse cx="76" cy="102" rx="7" ry="5" fill="#1E3A8A"/>
+<circle cx="47" cy="58" r="5" fill="#fff"/><circle cx="73" cy="58" r="5" fill="#fff"/><circle cx="47" cy="59" r="3" fill="#0B0F19"/><circle cx="73" cy="59" r="3" fill="#0B0F19"/><circle cx="48.2" cy="57.6" r="1.1" fill="#fff"/><circle cx="74.2" cy="57.6" r="1.1" fill="#fff"/>
+<path d="M52 70 Q60 77 68 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M8 80 c-6 -10 -20 -4 -16 6 c2 6 16 14 16 14 s14 -8 16 -14 c4 -10 -10 -16 -16 -6z" fill="#1D4ED8"/></g></svg></div><br>Thanks! I'll be in touch soon to say hi to your pup.</div>
 </section>
 
 <footer>Serving North Kellyville and nearby<small>© Happy Paws Walks</small></footer>
