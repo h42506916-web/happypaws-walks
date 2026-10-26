@@ -41,18 +41,19 @@ const phoneOK=v=>{const d=v.replace(/[\s\-().]/g,'');return /^(?:\+?61|0)4\d{8}$
 function check(i){const fd=i.closest('.field');if(!fd)return true;let v=i.value.trim(),ok=true;
  if(i.required&&!v)ok=false;else if(i.id==='phone'&&!phoneOK(v))ok=false;
  fd.classList.toggle('bad',!ok);fd.classList.toggle('ok',ok&&v!=='');i.setAttribute('aria-invalid',!ok);return ok}
-const KEY='hp-draft',FIELDS=['name','dog','time','dogs','size','age','temper','notes','first'];
+const KEY='hp-draft',FIELDS=['name','dog','date','time','dogs','size','age','temper','notes','first'];
 function save(){try{const d={};FIELDS.forEach(k=>{const el=f.elements[k];d[k]=el.type==='checkbox'?el.checked:el.value});sessionStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
 try{const d=JSON.parse(sessionStorage.getItem(KEY)||'null');if(d)FIELDS.forEach(k=>{const el=f.elements[k];if(el&&k in d){if(el.type==='checkbox')el.checked=!!d[k];else el.value=d[k]}})}catch(e){}
 const notes=$('#notes'),nc=$('#notes-c');const cnt=()=>nc.textContent=notes.value.length+' / 600';cnt();notes.addEventListener('input',cnt);
 f.addEventListener('input',save);f.addEventListener('change',save);
 f.querySelectorAll('input:not([type=checkbox])').forEach(i=>{i.addEventListener('blur',()=>{if(i.value)check(i)});i.addEventListener('input',()=>{if(i.closest('.field').classList.contains('bad'))check(i)})});
 let sending=false;
-f.addEventListener('submit',e=>{e.preventDefault();if(sending)return;let first=null;['name','dog','phone'].forEach(k=>{const i=f.elements[k];if(!check(i)&&!first)first=i});
+f.addEventListener('submit',e=>{e.preventDefault();if(sending)return;let first=null;['name','dog','phone'].forEach(k=>{const i=f.elements[k];if(!check(i)&&!first)first=i});const dt=HPB.checkDT();if(!dt.ok&&!first)first=dt.el;
  if(first){first.focus();doTrick('wiggle');feel('surprised',1500);say('Oops, check that one');return}
+ if(!HPB.free()){HPB.dup();doTrick('wiggle');feel('surprised',1500);say('That slot is taken');return}
  sending=true;const b=f.querySelector('.btn[type=submit]');b.disabled=true;b.textContent='Sending…';
- setTimeout(()=>{try{sessionStorage.removeItem(KEY);sessionStorage.setItem('hp-sent','1')}catch(e){}f.style.display='none';const t=$('#thanks');t.style.display='block';t.focus({preventScroll:true});t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});buddy.classList.remove('away');doTrick('flip');base='joy';feel('joy',0);say('Yay, thank you!')},700)});
-$('#again').addEventListener('click',()=>{f.reset();f.querySelectorAll('.field').forEach(x=>x.classList.remove('ok','bad'));cnt();const b=f.querySelector('.btn[type=submit]');b.disabled=false;b.textContent='Send request';sending=false;$('#thanks').style.display='none';f.style.display='';base='neutral';feel('neutral',0);$('#name').focus()});
+ setTimeout(()=>{HPB.saveIt();try{sessionStorage.removeItem(KEY);sessionStorage.setItem('hp-sent','1')}catch(e){}f.style.display='none';const t=$('#thanks');t.style.display='block';t.focus({preventScroll:true});t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});buddy.classList.remove('away');doTrick('flip');base='joy';feel('joy',0);say('Yay, thank you!')},700)});
+$('#again').addEventListener('click',()=>{f.reset();HPB.reset();f.querySelectorAll('.field').forEach(x=>x.classList.remove('ok','bad'));cnt();const b=f.querySelector('.btn[type=submit]');b.disabled=false;b.textContent='Send request';sending=false;$('#thanks').style.display='none';f.style.display='';base='neutral';feel('neutral',0);$('#name').focus()});
 addEventListener('pageshow',()=>{const b=f.querySelector('.btn[type=submit]');if(f.style.display!=='none'){b.disabled=false;b.textContent='Send request';sending=false}});
 }
 addEventListener('beforeprint',()=>$$('.faq details').forEach(d=>{d.hidden=false;d.open=true}));
@@ -69,31 +70,63 @@ addEventListener('scroll',()=>{if(!t){t=true;requestAnimationFrame(upd)}},{passi
 
 // active tab is set per page in the HTML (aria-current="page")
 
-if(document.getElementById('caldays')){const days=document.getElementById('caldays'),mt=document.getElementById('calmonth'),pv=document.getElementById('calprev'),nx=document.getElementById('calnext'),panel=document.getElementById('calpanel'),wrap=panel.parentNode,F=document.getElementById('f'),T=document.getElementById('thanks'),chip=document.getElementById('dchip'),chipT=document.getElementById('dchip-t'),fdate=document.getElementById('fdate'),td=document.getElementById('thanks-d');
- const MN=['January','February','March','April','May','June','July','August','September','October','November','December'],DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
- const t0=new Date();const today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());const MAXM=11;
- let vy=today.getFullYear(),vm=today.getMonth(),sel=null,foc=new Date(today);
- const same=(a,b)=>a&&b&&a.getTime()===b.getTime();const lbl=d=>DN[d.getDay()]+' '+d.getDate()+' '+MN[d.getMonth()];
- const mi=(y,m)=>(y-today.getFullYear())*12+m-today.getMonth();
- function render(focus){mt.textContent=MN[vm]+' '+vy;pv.disabled=mi(vy,vm)<=0;nx.disabled=mi(vy,vm)>=MAXM;
+
+
+// ---- bookings (stored on this device)
+const HPB=(()=>{const K='hp-bookings',MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],MF=['January','February','March','April','May','June','July','August','September','October','November','December'],DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+ const load=()=>{try{const a=JSON.parse(localStorage.getItem(K)||'[]');return Array.isArray(a)?a.filter(b=>b&&/^\d{4}-\d\d-\d\d$/.test(b.date)&&/^\d\d:\d\d$/.test(b.time)):[]}catch(e){return[]}};
+ const store=a=>{try{localStorage.setItem(K,JSON.stringify(a))}catch(e){}};
+ const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+ const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+ const tl=t=>{let[h,m]=t.split(':').map(Number);const ap=h<12?'am':'pm';h=h%12||12;return h+':'+String(m).padStart(2,'0')+ap};
+ const dl=s=>{const d=pd(s);return DN[d.getDay()]+' '+d.getDate()+' '+MF[d.getMonth()]};
+ const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const t0=new Date(),today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());
+ const SLOTS=[];for(let h=8;h<=17;h++)SLOTS.push(String(h).padStart(2,'0')+':00');
+ const api={load,iso,tl,dl,checkDT(){return{ok:true}},free(){return true},dup(){},saveIt(){},reset(){}};
+ const f=document.getElementById('f'),di=document.getElementById('date');
+ if(f&&di){const pills=document.getElementById('pills'),tf=document.getElementById('time-f'),df=document.getElementById('date-f'),de=document.getElementById('dup-e');
+  const mx=new Date(today);mx.setDate(mx.getDate()+60);const mn=new Date(today);mn.setDate(mn.getDate()+1);di.min=iso(mn);di.max=iso(mx);
+  const cur=()=>{const r=f.querySelector('input[name=time]:checked');return r?r.value:''};
+  function draw(){const v=cur(),d=di.value,taken=new Set(load().filter(b=>b.date===d).map(b=>b.time));
+   pills.innerHTML=(d?'':'<p class="hint">Choose a date first to see times.</p>')+SLOTS.map(s=>{const t=taken.has(s);return `<label class="pill"><input type="radio" name="time" value="${s}"${s===v&&!t?' checked':''}${t||!d?' disabled':''} aria-label="${tl(s)}${t?', already booked':''}"><span>${tl(s)}</span></label>`}).join('');
+   pills.querySelectorAll('input').forEach(r=>r.addEventListener('change',()=>{tf.classList.remove('bad');de.classList.remove('show')}))}
+  const okDate=()=>di.value&&di.value>=di.min&&di.value<=di.max;
+  di.addEventListener('change',()=>{if(di.value&&!okDate()){di.value=''}df.classList.toggle('bad',!di.value);df.classList.toggle('ok',!!di.value);de.classList.remove('show');draw()});
+  const dE=document.getElementById('date-e');
+  api.checkDT=()=>{let el=null;const dok=okDate();dE.textContent=di.value&&!dok?'Please choose a date in the next 60 days.':'Please choose a date.';df.classList.toggle('bad',!dok);di.setAttribute('aria-invalid',!dok);if(!dok)el=di;
+   const tok=dok&&!!cur();tf.classList.toggle('bad',!tok);if(!tok&&!el)el=pills.querySelector('input:not(:disabled)')||di;return{ok:dok&&tok,el}};
+  api.free=()=>!load().some(b=>b.date===di.value&&b.time===cur());
+  api.dup=()=>{de.classList.add('show');draw();tf.classList.add('bad');de.scrollIntoView({block:'center'})};
+  api.saveIt=()=>{const a=load(),v=n=>(f.elements[n]&&f.elements[n].value||'').trim().slice(0,60);a.push({id:Date.now().toString(36),date:di.value,time:cur(),dog:v('dog'),dogs:v('dogs'),size:v('size')});store(a);
+   const td=document.getElementById('thanks-d');if(td)td.textContent=dl(di.value)+' at '+tl(cur())};
+  api.reset=()=>{df.classList.remove('bad','ok');tf.classList.remove('bad');de.classList.remove('show');setTimeout(draw)};
+  if(di.value&&!okDate())di.value='';draw();try{const d=JSON.parse(sessionStorage.getItem('hp-draft')||'null');if(d&&d.time){const r=pills.querySelector(`input[value="${d.time}"]:not(:disabled)`);if(r)r.checked=true}}catch(e){}}
+ return api})();
+if(document.getElementById('bkcards')){const days=document.getElementById('caldays'),mt=document.getElementById('calmonth'),pv=document.getElementById('calprev'),nx=document.getElementById('calnext'),ul=document.getElementById('bkcards'),em=document.getElementById('bkempty'),more=document.getElementById('bkmore');
+ const MF=['January','February','March','April','May','June','July','August','September','October','November','December'],MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ const t0=new Date(),today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate()),tiso=HPB.iso(today);
+ const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};const esc=s=>String(s||'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+ let vy=today.getFullYear(),vm=today.getMonth();
+ const sorted=()=>HPB.load().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+ {const up=sorted().find(b=>b.date>=tiso);if(up){const d=pd(up.date);vy=d.getFullYear();vm=d.getMonth()}}
+ const mi=(y,m)=>y*12+m;
+ function range(){const a=sorted();let lo=mi(today.getFullYear(),today.getMonth()),hi=lo+2;a.forEach(b=>{const d=pd(b.date),k=mi(d.getFullYear(),d.getMonth());lo=Math.min(lo,k);hi=Math.max(hi,k)});return[lo,hi]}
+ function grid(){const a=sorted(),set=new Set(a.map(b=>b.date)),[lo,hi]=range();mt.textContent=MF[vm]+' '+vy;pv.disabled=mi(vy,vm)<=lo;nx.disabled=mi(vy,vm)>=hi;
   const first=new Date(vy,vm,1),lead=(first.getDay()+6)%7,n=new Date(vy,vm+1,0).getDate();let h='',c=0;
   for(let r=0;c<lead+n;r++){h+='<div role="row" class="calrow">';for(let k=0;k<7;k++,c++){const dn=c-lead+1;if(dn<1||dn>n){h+='<span role="gridcell"><span class="day out" aria-hidden="true"></span></span>';continue}
-   const d=new Date(vy,vm,dn),past=d<today,ist=same(d,today),is=same(d,sel);
-   h+=`<span role="gridcell"><button type="button" class="day${ist?' today':''}" data-d="${dn}" tabindex="-1" aria-label="${lbl(d)}${ist?', today':''}${past?', unavailable':''}" aria-selected="${is}"${ist?' aria-current="date"':''}${past?' disabled':''}>${dn}</button></span>`}h+='</div>'}
-  days.innerHTML=h;if(foc.getMonth()!==vm||foc.getFullYear()!==vy||foc<today){foc=(vy===today.getFullYear()&&vm===today.getMonth())?new Date(today):new Date(vy,vm,1)}
-  const b=days.querySelector(`[data-d="${foc.getDate()}"]`);if(b){b.tabIndex=0;if(focus)b.focus()}}
- function go(d,focus){if(d<today)d=new Date(today);const m=mi(d.getFullYear(),d.getMonth());if(m>MAXM)return;foc=d;vy=d.getFullYear();vm=d.getMonth();render(focus)}
- pv.addEventListener('click',()=>{const d=new Date(vy,vm-1,1);vy=d.getFullYear();vm=d.getMonth();render()});
- nx.addEventListener('click',()=>{const d=new Date(vy,vm+1,1);vy=d.getFullYear();vm=d.getMonth();render()});
- days.addEventListener('keydown',e=>{const k=e.key,d=new Date(foc);const mv={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[k];
-  if(mv!==undefined)d.setDate(d.getDate()+mv);else if(k==='Home')d.setDate(d.getDate()-(d.getDay()+6)%7);else if(k==='End')d.setDate(d.getDate()+(7-d.getDay())%7);else if(k==='PageUp')d.setMonth(d.getMonth()-1);else if(k==='PageDown')d.setMonth(d.getMonth()+1);else return;
-  e.preventDefault();go(d,true)});
- function home(){wrap.classList.add('open');panel.hidden=false}
- days.addEventListener('click',e=>{const b=e.target.closest('.day');if(!b||b.disabled)return;sel=new Date(vy,vm,+b.dataset.d);foc=new Date(sel);render(true);
-  const L=lbl(sel);chipT.textContent=L;chip.hidden=false;fdate.value=sel.getFullYear()+'-'+String(sel.getMonth()+1).padStart(2,'0')+'-'+String(sel.getDate()).padStart(2,'0');td.textContent=' about '+L;
-  const fresh=panel.hidden;home();if(T.style.display==='block')document.getElementById('again').click();F.classList.add('in');
-  if(typeof feel==='function'){feel('excited',2400);say('Ooh, '+L.split(' ')[0]+'!');doTrick('hop')}
-  if(fresh||innerWidth<860)setTimeout(()=>panel.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}),fresh?60:0);
-  setTimeout(()=>document.getElementById('name').focus({preventScroll:true}),reduce?0:450)});
- document.getElementById('chgdate').addEventListener('click',()=>{const c=document.getElementById('cal');c.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});const b=days.querySelector('[tabindex="0"]');if(b)b.focus({preventScroll:true})});
- render()}
+   const d=new Date(vy,vm,dn),s=HPB.iso(d),bk=set.has(s),ist=s===tiso,past=d<today;
+   h+=`<span role="gridcell">${bk?`<button type="button" class="day booked${past?' past':''}${ist?' today':''}" data-iso="${s}" aria-label="${HPB.dl(s)}, walk booked">${dn}</button>`:`<span class="day${ist?' today':''}" style="cursor:default;display:grid;place-items:center" aria-label="${HPB.dl(s)}${ist?', today':''}">${dn}</span>`}</span>`}h+='</div>'}
+  days.innerHTML=h}
+ function list(){const a=sorted();em.hidden=!!a.length;more.hidden=!a.length;
+  ul.innerHTML=a.map(b=>{const d=pd(b.date),past=b.date<tiso,ex=[b.dogs&&(b.dogs+(b.dogs==='1'?' dog':' dogs')),b.size&&b.size+' size'].filter(Boolean).join(' · ');
+   return `<li class="bk${past?' past':''}" data-id="${esc(b.id)}" data-iso="${b.date}"><div class="dd" aria-hidden="true"><small>${DS[d.getDay()]}</small><b>${d.getDate()}</b><small>${MS[d.getMonth()]}</small></div><div class="bi"><strong>${esc(b.dog)||'Your pup'}'s walk</strong><span>${HPB.dl(b.date)} at ${HPB.tl(b.time)}${past?' · Past':''}</span>${ex?`<span>${esc(ex)}</span>`:''}</div><button type="button" class="x" aria-label="Cancel walk on ${HPB.dl(b.date)} at ${HPB.tl(b.time)}">Cancel</button></li>`}).join('')}
+ function all(){grid();list()}
+ pv.addEventListener('click',()=>{const d=new Date(vy,vm-1,1);vy=d.getFullYear();vm=d.getMonth();grid()});
+ nx.addEventListener('click',()=>{const d=new Date(vy,vm+1,1);vy=d.getFullYear();vm=d.getMonth();grid()});
+ days.addEventListener('click',e=>{const b=e.target.closest('.day.booked');if(!b)return;const li=ul.querySelector(`[data-iso="${b.dataset.iso}"]`);if(li){ul.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl'));li.classList.add('hl');li.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});setTimeout(()=>li.classList.remove('hl'),2400)}});
+ ul.addEventListener('click',e=>{const li=e.target.closest('.bk');if(!li)return;
+  if(e.target.closest('.x')){const x=e.target.closest('.x');const cf=document.createElement('div');cf.className='cf';cf.innerHTML='<span>Cancel this walk?</span><button type="button" class="yes">Yes, cancel</button><button type="button" class="no">Keep it</button>';x.replaceWith(cf);cf.querySelector('.no').focus();return}
+  if(e.target.closest('.no')){list();return}
+  if(e.target.closest('.yes')){try{localStorage.setItem('hp-bookings',JSON.stringify(HPB.load().filter(b=>b.id!==li.dataset.id)))}catch(x){}all();if(typeof say==='function'){say('Walk cancelled');feel('surprised',1200)}(ul.querySelector('.x')||em.querySelector('a')).focus()}});
+ addEventListener('storage',all);all()}
