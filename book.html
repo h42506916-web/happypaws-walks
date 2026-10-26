@@ -37,7 +37,10 @@
     <div class="field"><label for="temper">Temperament <span class="opt">(optional)</span></label><select id="temper" name="temper"><option value="">Choose</option><option>Easy-going</option><option>Energetic</option><option>Shy or anxious</option><option>Reactive to dogs or people</option><option>Rescue, still settling in</option></select></div></div>
     <div class="field"><label for="notes">Anything we should know? <span class="opt">(optional)</span><span class="count" id="notes-c" aria-hidden="true">0 / 600</span></label><textarea id="notes" name="notes" maxlength="600" placeholder="Breed, energy level, health needs, lead habits" aria-describedby="notes-h"></textarea><p class="err" id="notes-h" style="display:none"></p></div>
     <label class="toggle" for="first"><span class="t">First time with us?</span><input type="checkbox" id="first" name="first" checked><span class="sw" aria-hidden="true"></span></label>
+    <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
     <button class="btn" type="submit">Send request</button>
+    <p class="err sende" id="send-e" role="alert">Couldn't send your booking. Please check your connection and try again.</p>
+    <p class="privacy">Your details are emailed to Happy Paws to arrange your walk.</p>
     <p class="note">No payment needed. I'll confirm your walk first. Please don't include passwords, alarm codes or key details here.</p>
   </form>
   <div id="thanks" role="status" tabindex="-1"><div class="float"><span class="em"><svg class="hm " viewBox="-6 -6 112 112" aria-hidden="true" focusable="false"><use href="#heart-joy"/></svg></span></div><strong>Request sent!</strong>Thanks! Your walk is requested for <span id="thanks-d"></span>. I'll be in touch soon to confirm.<br><span class="tacts"><a class="btn" href="calendar.html" id="viewb">View my bookings</a><button type="button" class="btn ghost again" id="again">Book another walk</button></span></div>
