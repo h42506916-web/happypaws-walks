@@ -182,5 +182,6 @@ body.inner main>section:first-child{padding-top:130px}
 .gocard.primary{background:var(--accent);border-color:var(--accent)}.gocard.primary b,.gocard.primary span,.gocard.primary::after{color:#fff}
 .gocard::after{margin-top:auto;padding-top:6px}
 @media(max-width:600px){.gocards{grid-template-columns:1fr 1fr;gap:10px}.gocard{padding:16px;border-radius:18px}.gocard b{font-size:1rem}.gocard span{font-size:.85rem}.gocard.primary{grid-column:1/-1}}
+.gocards{grid-template-columns:repeat(4,1fr)}@media(max-width:820px){.gocards{grid-template-columns:1fr 1fr}.gocard.primary{grid-column:auto}}
 .links a.mini.active{box-shadow:0 0 0 3px rgba(200,40,46,.25)}
 @media(prefers-reduced-motion:reduce){.gocard{transition:none}.gocard:hover{transform:none}}
