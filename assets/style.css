@@ -213,5 +213,7 @@ fieldset.slots.bad .err,.err.dup.show{display:block}.field.bad input[type=date]{
 .day.booked{background:var(--accent);color:#fff;font-weight:700}.day.booked:hover:not(:disabled){background:var(--accent-h,#a8232a)}
 .day.booked.past{opacity:.55}
 
+.bk .bi .ref{font-size:.78rem;letter-spacing:.04em;color:var(--muted);margin-top:2px}.bkmsg:empty{display:none}.bkmsg{margin:0 0 12px;padding:12px 16px;border-radius:14px;font-size:.9rem}.bkmsg.ok{background:var(--accent-soft);color:var(--ink)}.bkmsg.bad{background:#fff4f4;color:#b3261e;border:1px solid rgba(179,38,30,.25)}.bk .cf button:disabled{opacity:.7;cursor:default}
+
 #grow{border-top:1px solid rgba(11,15,25,.06);background:linear-gradient(#fff,#fbfbfd 55%,#fff)}#grow .sm{margin-bottom:30px}#grow .sm .hm{width:clamp(84px,13vw,116px);height:clamp(84px,13vw,116px)}#grow .eyebrow{margin-bottom:18px}#grow h2{line-height:1.05;letter-spacing:-.02em}#grow .lead{margin:26px auto 0}#grow .sticky::after{content:"";position:absolute;bottom:9vh;left:50%;width:44px;height:3px;margin-left:-22px;border-radius:3px;background:var(--accent);opacity:.35}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}#f .sende{display:none;margin-top:12px;text-align:center}#f .sende.show{display:block}.privacy{margin:12px 0 0;text-align:center;font-size:13px;color:var(--muted,#6e6e73)}

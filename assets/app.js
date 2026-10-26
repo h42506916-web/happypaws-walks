@@ -53,7 +53,7 @@ f.addEventListener('submit',e=>{e.preventDefault();if(sending)return;let first=n
  if(!HPB.free()){HPB.dup();doTrick('wiggle');feel('surprised',1500);say('That slot is taken');return}
  sending=true;const b=f.querySelector('.btn[type=submit]');b.disabled=true;b.textContent='Sending…';
  const se=$('#send-e');se.classList.remove('show');const g=n=>(f.elements[n]&&f.elements[n].value||'').trim(),tc=f.querySelector('input[name=time]:checked');
- const data={_subject:'New Happy Paws booking',_template:'table',_captcha:'false',_honey:g('_honey'),Name:g('name'),Phone:g('phone'),'Dog name':g('dog'),Date:HPB.dl(g('date')),Time:tc?HPB.tl(tc.value):'','Number of dogs':g('dogs')||'Not given',Size:g('size')||'Not given',Age:g('age')||'Not given',Temperament:g('temper')||'Not given',Notes:g('notes')||'None','First time':f.elements.first&&f.elements.first.checked?'Yes':'No'};
+ const data={_subject:'New Happy Paws booking','Booking ref':HPB.newRef(),_template:'table',_captcha:'false',_honey:g('_honey'),Name:g('name'),Phone:g('phone'),'Dog name':g('dog'),Date:HPB.dl(g('date')),Time:tc?HPB.tl(tc.value):'','Number of dogs':g('dogs')||'Not given',Size:g('size')||'Not given',Age:g('age')||'Not given',Temperament:g('temper')||'Not given',Notes:g('notes')||'None','First time':f.elements.first&&f.elements.first.checked?'Yes':'No'};
  const fail=()=>{sending=false;b.disabled=false;b.textContent='Send request';se.classList.add('show');se.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});doTrick('wiggle');feel('surprised',1500);say('Hmm, try again?')};
  fetch('https://formsubmit.co/ajax/h.bastian1@icloud.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false')&&!/activat/i.test(j.message||''))throw 0;
  HPB.saveIt();try{sessionStorage.removeItem(KEY);sessionStorage.setItem('hp-sent','1')}catch(e){}f.style.display='none';const t=$('#thanks');t.style.display='block';t.focus({preventScroll:true});t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});buddy.classList.remove('away');doTrick('flip');base='joy';feel('joy',0);say('Yay, thank you!')}).catch(fail)});
@@ -87,7 +87,8 @@ const HPB=(()=>{const K='hp-bookings',MN=['Jan','Feb','Mar','Apr','May','Jun','J
  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const t0=new Date(),today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());
  const SLOTS=[];for(let h=8;h<=17;h++)SLOTS.push(String(h).padStart(2,'0')+':00');
- const api={load,iso,tl,dl,checkDT(){return{ok:true}},free(){return true},dup(){},saveIt(){},reset(){}};
+ let pref='';const mkref=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let r='';const u=new Uint8Array(4);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<4;i++)u[i]=Math.random()*256}u.forEach(x=>r+=A[x%A.length]);return 'HP-'+r};
+ const api={load,iso,tl,dl,newRef(){pref=mkref();return pref},checkDT(){return{ok:true}},free(){return true},dup(){},saveIt(){},reset(){}};
  const f=document.getElementById('f'),di=document.getElementById('date');
  if(f&&di){const pills=document.getElementById('pills'),tf=document.getElementById('time-f'),df=document.getElementById('date-f'),de=document.getElementById('dup-e');
   const mx=new Date(today);mx.setDate(mx.getDate()+60);const mn=new Date(today);mn.setDate(mn.getDate()+1);di.min=iso(mn);di.max=iso(mx);
@@ -102,8 +103,8 @@ const HPB=(()=>{const K='hp-bookings',MN=['Jan','Feb','Mar','Apr','May','Jun','J
    const tok=dok&&!!cur();tf.classList.toggle('bad',!tok);if(!tok&&!el)el=pills.querySelector('input:not(:disabled)')||di;return{ok:dok&&tok,el}};
   api.free=()=>!load().some(b=>b.date===di.value&&b.time===cur());
   api.dup=()=>{de.classList.add('show');draw();tf.classList.add('bad');de.scrollIntoView({block:'center'})};
-  api.saveIt=()=>{const a=load(),v=n=>(f.elements[n]&&f.elements[n].value||'').trim().slice(0,60);a.push({id:Date.now().toString(36),date:di.value,time:cur(),dog:v('dog'),dogs:v('dogs'),size:v('size')});store(a);
-   const td=document.getElementById('thanks-d');if(td)td.textContent=dl(di.value)+' at '+tl(cur())};
+  api.saveIt=()=>{const a=load(),v=n=>(f.elements[n]&&f.elements[n].value||'').trim().slice(0,60);a.push({id:Date.now().toString(36),ref:pref||mkref(),date:di.value,time:cur(),dog:v('dog'),dogs:v('dogs'),size:v('size')});store(a);
+   const td=document.getElementById('thanks-d');if(td)td.textContent=dl(di.value)+' at '+tl(cur());const tr=document.getElementById('thanks-r');if(tr)tr.textContent=a[a.length-1].ref;pref=''};
   api.reset=()=>{df.classList.remove('bad','ok');tf.classList.remove('bad');de.classList.remove('show');setTimeout(draw)};
   if(di.value&&!okDate())di.value='';draw();try{const d=JSON.parse(sessionStorage.getItem('hp-draft')||'null');if(d&&d.time){const r=pills.querySelector(`input[value="${d.time}"]:not(:disabled)`);if(r)r.checked=true}}catch(e){}}
  return api})();
@@ -124,7 +125,7 @@ if(document.getElementById('bkcards')){const days=document.getElementById('calda
   days.innerHTML=h}
  function list(){const a=sorted();em.hidden=!!a.length;more.hidden=!a.length;
   ul.innerHTML=a.map(b=>{const d=pd(b.date),past=b.date<tiso,ex=[b.dogs&&(b.dogs+(b.dogs==='1'?' dog':' dogs')),b.size&&b.size+' size'].filter(Boolean).join(' · ');
-   return `<li class="bk${past?' past':''}" data-id="${esc(b.id)}" data-iso="${b.date}"><div class="dd" aria-hidden="true"><small>${DS[d.getDay()]}</small><b>${d.getDate()}</b><small>${MS[d.getMonth()]}</small></div><div class="bi"><strong>${esc(b.dog)||'Your pup'}'s walk</strong><span>${HPB.dl(b.date)} at ${HPB.tl(b.time)}${past?' · Past':''}</span>${ex?`<span>${esc(ex)}</span>`:''}</div><button type="button" class="x" aria-label="Cancel walk on ${HPB.dl(b.date)} at ${HPB.tl(b.time)}">Cancel</button></li>`}).join('')}
+   return `<li class="bk${past?' past':''}" data-id="${esc(b.id)}" data-iso="${b.date}"><div class="dd" aria-hidden="true"><small>${DS[d.getDay()]}</small><b>${d.getDate()}</b><small>${MS[d.getMonth()]}</small></div><div class="bi"><strong>${esc(b.dog)||'Your pup'}'s walk</strong><span>${HPB.dl(b.date)} at ${HPB.tl(b.time)}${past?' · Past':''}</span>${ex?`<span>${esc(ex)}</span>`:''}${b.ref?`<span class="ref">Ref ${esc(b.ref)}</span>`:''}</div><button type="button" class="x" aria-label="Cancel walk on ${HPB.dl(b.date)} at ${HPB.tl(b.time)}">Cancel</button></li>`}).join('')}
  function all(){grid();list()}
  pv.addEventListener('click',()=>{const d=new Date(vy,vm-1,1);vy=d.getFullYear();vm=d.getMonth();grid()});
  nx.addEventListener('click',()=>{const d=new Date(vy,vm+1,1);vy=d.getFullYear();vm=d.getMonth();grid()});
@@ -132,5 +133,10 @@ if(document.getElementById('bkcards')){const days=document.getElementById('calda
  ul.addEventListener('click',e=>{const li=e.target.closest('.bk');if(!li)return;
   if(e.target.closest('.x')){const x=e.target.closest('.x');const cf=document.createElement('div');cf.className='cf';cf.innerHTML='<span>Cancel this walk?</span><button type="button" class="yes">Yes, cancel</button><button type="button" class="no">Keep it</button>';x.replaceWith(cf);cf.querySelector('.no').focus();return}
   if(e.target.closest('.no')){list();return}
-  if(e.target.closest('.yes')){try{localStorage.setItem('hp-bookings',JSON.stringify(HPB.load().filter(b=>b.id!==li.dataset.id)))}catch(x){}all();if(typeof say==='function'){say('Walk cancelled');feel('surprised',1200)}(ul.querySelector('.x')||em.querySelector('a')).focus()}});
+  if(e.target.closest('.yes')){const y=e.target.closest('.yes'),cf=y.closest('.cf'),bk=HPB.load().find(b=>b.id===li.dataset.id),msg=document.getElementById('bkmsg');if(!bk){all();return}
+   cf.querySelectorAll('button').forEach(x=>x.disabled=true);y.textContent='Cancelling…';msg.className='bkmsg';msg.textContent='';
+   const ex=s=>s||'Not given',data={_subject:'Happy Paws booking CANCELLED',_template:'table',_captcha:'false',_honey:'',Status:'Cancelled','Booking ref':bk.ref||'n/a (older booking)','Dog name':bk.dog||'Not given',Date:HPB.dl(bk.date),Time:HPB.tl(bk.time),'Number of dogs':ex(bk.dogs),Size:ex(bk.size)};
+   fetch('https://formsubmit.co/ajax/h.bastian1@icloud.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false'))throw 0;
+    try{localStorage.setItem('hp-bookings',JSON.stringify(HPB.load().filter(b=>b.id!==bk.id)))}catch(x){}all();msg.className='bkmsg ok';msg.textContent='Walk cancelled. '+HPB.dl(bk.date)+' at '+HPB.tl(bk.time)+' has been cancelled and Happy Paws has been told.';if(typeof say==='function'){say('Walk cancelled');feel('surprised',1200)}(ul.querySelector('.x')||em.querySelector('a')).focus()})
+   .catch(()=>{list();msg.className='bkmsg bad';msg.textContent="Couldn't cancel right now. Please check your connection and try again.";const nl=ul.querySelector(`[data-id="${li.dataset.id}"] .x`);if(nl)nl.focus()})}});
  addEventListener('storage',all);all()}
