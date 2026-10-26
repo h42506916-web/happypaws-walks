@@ -183,6 +183,7 @@ body.inner main>section:first-child{padding-top:130px}
 @media(max-width:600px){.gocards{grid-template-columns:1fr 1fr;gap:10px}.gocard{padding:16px;border-radius:18px}.gocard b{font-size:1rem}.gocard span{font-size:.85rem}.gocard.primary{grid-column:1/-1}}
 .gocards{grid-template-columns:repeat(3,1fr)}@media(max-width:820px){.gocards{grid-template-columns:1fr 1fr}.gocard.primary{grid-column:1/-1}}
 .links a.mini.active{box-shadow:0 0 0 3px rgba(200,40,46,.25)}
+.links a:not(.mini){display:inline-block;padding:12px 0;margin:-12px 0}.links a.active:not(.mini)::after{bottom:6px}
 @media(prefers-reduced-motion:reduce){.gocard{transition:none}.gocard:hover{transform:none}}
 
 .cta .btn{min-width:150px}@media(max-width:520px){.cta{flex-direction:column;align-items:stretch;max-width:300px;margin:0 auto}.cta .btn{width:100%}}input[type=date]{width:100%;min-height:50px;-webkit-appearance:none;appearance:none;background:#fff}
@@ -204,7 +205,7 @@ fieldset.slots.bad .err,.err.dup.show{display:block}.field.bad input[type=date]{
 .bk{display:flex;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:20px;background:#fff;transition:border-color .25s,box-shadow .25s}
 .bk.hl{border-color:var(--accent);box-shadow:0 0 0 3px rgba(200,40,46,.15)}.bk.past{opacity:.6}
 .bk .dd{flex:none;width:58px;text-align:center;border-radius:14px;background:var(--accent-soft);padding:8px 0;color:var(--accent);line-height:1.1}.bk .dd b{display:block;font-size:1.4rem}.bk .dd small{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.bk .bi{flex:1;min-width:0}.bk .bi strong{display:block;color:var(--ink)}.bk .bi span{color:var(--muted);font-size:.88rem;display:block;overflow-wrap:anywhere}
+.bk .bi{flex:1;min-width:0}.bk .bi strong{display:block;color:var(--ink);overflow-wrap:anywhere}.bk .bi span{color:var(--muted);font-size:.88rem;display:block;overflow-wrap:anywhere}
 .bk .x{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer}.bk .x:hover{border-color:var(--accent);color:var(--accent)}
 .bk .cf{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--ink)}.bk .cf button{border-radius:999px;padding:7px 12px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:#fff}.bk .cf .yes{background:var(--accent);border-color:var(--accent);color:#fff}
 @media(max-width:480px){.bk{flex-wrap:wrap;padding:14px;gap:12px}.bk .x,.bk .cf{margin-left:74px}}
