@@ -203,7 +203,7 @@ fieldset.slots.bad .err,.err.dup.show{display:block}.field.bad input[type=date]{
 .bklist{display:flex;flex-direction:column;gap:12px;min-width:0}
 #bkcards{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .bk{display:flex;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:20px;background:#fff;transition:border-color .25s,box-shadow .25s}
-.bk.hl{border-color:var(--accent);box-shadow:0 0 0 3px rgba(200,40,46,.15)}.bk.past{opacity:.6}
+.bk.hl{border-color:var(--accent);box-shadow:0 0 0 3px rgba(200,40,46,.15)}.bk.past{background:#fdf0f1;border-color:#f5c9cd;box-shadow:inset 4px 0 0 #f2a7ae}.bk.past .dd{background:#fbe3e6;color:#b0444b}.bk.past .bi strong{color:#4a3a3c}.bk.past .bi span,.bk.past .bi .ref{color:#6e5a5d}.bk.past .x{background:#fffafa;border-color:#f5c9cd}
 .bk .dd{flex:none;width:58px;text-align:center;border-radius:14px;background:var(--accent-soft);padding:8px 0;color:var(--accent);line-height:1.1}.bk .dd b{display:block;font-size:1.4rem}.bk .dd small{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .bk .bi{flex:1;min-width:0}.bk .bi strong{display:block;color:var(--ink);overflow-wrap:anywhere}.bk .bi span{color:var(--muted);font-size:.88rem;display:block;overflow-wrap:anywhere}
 .bk .x{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer}.bk .x:hover{border-color:var(--accent);color:var(--accent)}
@@ -212,7 +212,7 @@ fieldset.slots.bad .err,.err.dup.show{display:block}.field.bad input[type=date]{
 #bkempty{text-align:center;padding:36px 24px;border:1px solid var(--line);border-radius:22px;color:var(--muted)}#bkempty .hm{width:64px;height:64px}#bkempty strong{display:block;color:var(--ink);font-size:1.2rem;margin:12px 0 4px}#bkempty p{margin:0 0 18px}
 #bkmore{align-self:flex-start}.saved{font-size:.78rem;color:var(--muted);margin:4px 0 0}
 .day.booked{background:var(--accent);color:#fff;font-weight:700}.day.booked:hover:not(:disabled){background:var(--accent-h,#a8232a)}
-.day.booked.past{opacity:.55}
+.day.booked.past{background:#fbe3e6;color:#a3373e;box-shadow:inset 0 0 0 1px #f5c9cd}.day.booked.past:hover:not(:disabled){background:#f8d5d9}
 
 .bk .bi .ref{font-size:.78rem;letter-spacing:.04em;color:var(--muted);margin-top:2px}.bkmsg:empty{display:none}.bkmsg{margin:0 0 12px;padding:12px 16px;border-radius:14px;font-size:.9rem}.bkmsg.ok{background:var(--accent-soft);color:var(--ink)}.bkmsg.bad{background:#fff4f4;color:#b3261e;border:1px solid rgba(179,38,30,.25)}.bk .cf button:disabled{opacity:.7;cursor:default}
 
