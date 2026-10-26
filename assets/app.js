@@ -53,7 +53,7 @@ f.addEventListener('submit',e=>{e.preventDefault();if(sending)return;let first=n
  if(!HPB.free()){HPB.dup();doTrick('wiggle');feel('surprised',1500);say('That slot is taken');return}
  sending=true;const b=f.querySelector('.btn[type=submit]');b.disabled=true;b.textContent='Sending…';
  const se=$('#send-e');se.classList.remove('show');const g=n=>(f.elements[n]&&f.elements[n].value||'').trim(),tc=f.querySelector('input[name=time]:checked');
- const data={_subject:'New Happy Paws booking','Booking ref':HPB.newRef(),_template:'table',_captcha:'false',_honey:g('_honey'),Name:g('name'),Phone:g('phone'),'Dog name':g('dog'),Date:HPB.dl(g('date')),Time:tc?HPB.tl(tc.value):'','Number of dogs':g('dogs')||'Not given',Size:g('size')||'Not given',Age:g('age')||'Not given',Temperament:g('temper')||'Not given',Notes:g('notes')||'None','First time':f.elements.first&&f.elements.first.checked?'Yes':'No'};
+ const data={_subject:'New Happy Paws booking','Booking ref':HPB.newRef(),_template:'table',_captcha:'false',_honey:g('_honey'),Name:g('name'),Phone:g('phone'),'Dog name':g('dog'),Date:HPB.dl(g('date')),Time:tc?HPB.tl(tc.value):'','Number of dogs':g('dogs')||'Not given',Price:HPB.price(g('dogs')),Size:g('size')||'Not given',Age:g('age')||'Not given',Temperament:g('temper')||'Not given',Notes:g('notes')||'None','First time':f.elements.first&&f.elements.first.checked?'Yes':'No'};
  const fail=()=>{sending=false;b.disabled=false;b.textContent='Send request';se.classList.add('show');se.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});doTrick('wiggle');feel('surprised',1500);say('Hmm, try again?')};
  fetch('https://formsubmit.co/ajax/h.bastian1@icloud.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false')&&!/activat/i.test(j.message||''))throw 0;
  HPB.saveIt();try{sessionStorage.removeItem(KEY);sessionStorage.setItem('hp-sent','1')}catch(e){}f.style.display='none';const t=$('#thanks');t.style.display='block';t.focus({preventScroll:true});t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});buddy.classList.remove('away');doTrick('flip');base='joy';feel('joy',0);say('Yay, thank you!')}).catch(fail)});
@@ -86,26 +86,26 @@ const HPB=(()=>{const K='hp-bookings',MN=['Jan','Feb','Mar','Apr','May','Jun','J
  const dl=s=>{const d=pd(s);return DN[d.getDay()]+' '+d.getDate()+' '+MF[d.getMonth()]};
  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const t0=new Date(),today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());
- const SLOTS=[];for(let h=8;h<=17;h++)SLOTS.push(String(h).padStart(2,'0')+':00');
+ const SLOTS=['16:00','17:00'];const price=n=>n==='2'?'$30 (1 hour, 2 dogs)':'$20 (1 hour, 1 dog)';const isSun=s=>{if(!s)return false;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).getDay()===0};const SUN="We don't walk on Sundays. Please choose Monday to Saturday.";
  let pref='';const mkref=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let r='';const u=new Uint8Array(4);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<4;i++)u[i]=Math.random()*256}u.forEach(x=>r+=A[x%A.length]);return 'HP-'+r};
- const api={load,iso,tl,dl,newRef(){pref=mkref();return pref},checkDT(){return{ok:true}},free(){return true},dup(){},saveIt(){},reset(){}};
+ const api={price,isSun,load,iso,tl,dl,newRef(){pref=mkref();return pref},checkDT(){return{ok:true}},free(){return true},dup(){},saveIt(){},reset(){}};
  const f=document.getElementById('f'),di=document.getElementById('date');
  if(f&&di){const pills=document.getElementById('pills'),tf=document.getElementById('time-f'),df=document.getElementById('date-f'),de=document.getElementById('dup-e');
   const mx=new Date(today);mx.setDate(mx.getDate()+60);const mn=new Date(today);mn.setDate(mn.getDate()+1);di.min=iso(mn);di.max=iso(mx);
   const cur=()=>{const r=f.querySelector('input[name=time]:checked');return r?r.value:''};
-  function draw(){const v=cur(),d=di.value,taken=new Set(load().filter(b=>b.date===d).map(b=>b.time));
+  function draw(){const v=cur(),d=isSun(di.value)?'':di.value,taken=new Set(load().filter(b=>b.date===d).map(b=>b.time));
    pills.innerHTML=(d?'':'<p class="hint">Choose a date first to see times.</p>')+SLOTS.map(s=>{const t=taken.has(s);return `<label class="pill"><input type="radio" name="time" value="${s}"${s===v&&!t?' checked':''}${t||!d?' disabled':''} aria-label="${tl(s)}${t?', already booked':''}"><span>${tl(s)}</span></label>`}).join('');
    pills.querySelectorAll('input').forEach(r=>r.addEventListener('change',()=>{tf.classList.remove('bad');de.classList.remove('show')}))}
-  const okDate=()=>di.value&&di.value>=di.min&&di.value<=di.max;
-  di.addEventListener('change',()=>{if(di.value&&!okDate()){di.value=''}df.classList.toggle('bad',!di.value);df.classList.toggle('ok',!!di.value);de.classList.remove('show');draw()});
+  const okDate=()=>di.value&&di.value>=di.min&&di.value<=di.max&&!isSun(di.value);const dsel=document.getElementById('dogs'),ps=document.getElementById('psum');const upd=()=>{if(ps)ps.innerHTML=dsel&&dsel.value==='2'?'1 hour walk, 2 dogs: <b>$30</b>':'1 hour walk, 1 dog: <b>$20</b>'};if(dsel){dsel.addEventListener('change',upd);dsel.addEventListener('input',upd)}setTimeout(upd);
+  di.addEventListener('change',()=>{const sun=isSun(di.value);if(di.value&&!okDate()&&!sun){di.value=''}const dE2=document.getElementById('date-e');if(sun){dE2.textContent=SUN;df.classList.add('bad');df.classList.remove('ok');de.classList.remove('show');draw();return}dE2.textContent='Please choose a date.';df.classList.toggle('bad',!di.value);df.classList.toggle('ok',!!di.value);de.classList.remove('show');draw()});
   const dE=document.getElementById('date-e');
-  api.checkDT=()=>{let el=null;const dok=okDate();dE.textContent=di.value&&!dok?'Please choose a date in the next 60 days.':'Please choose a date.';df.classList.toggle('bad',!dok);di.setAttribute('aria-invalid',!dok);if(!dok)el=di;
+  api.checkDT=()=>{let el=null;const dok=okDate();dE.textContent=isSun(di.value)?SUN:di.value&&!dok?'Please choose a date in the next 60 days.':'Please choose a date.';df.classList.toggle('bad',!dok);di.setAttribute('aria-invalid',!dok);if(!dok)el=di;
    const tok=dok&&!!cur();tf.classList.toggle('bad',!tok);if(!tok&&!el)el=pills.querySelector('input:not(:disabled)')||di;return{ok:dok&&tok,el}};
   api.free=()=>!load().some(b=>b.date===di.value&&b.time===cur());
   api.dup=()=>{de.classList.add('show');draw();tf.classList.add('bad');de.scrollIntoView({block:'center'})};
   api.saveIt=()=>{const a=load(),v=n=>(f.elements[n]&&f.elements[n].value||'').trim().slice(0,60);a.push({id:Date.now().toString(36),ref:pref||mkref(),date:di.value,time:cur(),dog:v('dog'),dogs:v('dogs'),size:v('size')});store(a);
-   const td=document.getElementById('thanks-d');if(td)td.textContent=dl(di.value)+' at '+tl(cur());const tr=document.getElementById('thanks-r');if(tr)tr.textContent=a[a.length-1].ref;pref=''};
-  api.reset=()=>{df.classList.remove('bad','ok');tf.classList.remove('bad');de.classList.remove('show');setTimeout(draw)};
+   const td=document.getElementById('thanks-d');if(td)td.textContent=dl(di.value)+' at '+tl(cur());const tp=document.getElementById('thanks-p');if(tp)tp.textContent=price(v('dogs'));const tr=document.getElementById('thanks-r');if(tr)tr.textContent=a[a.length-1].ref;pref=''};
+  api.reset=()=>{setTimeout(upd);df.classList.remove('bad','ok');tf.classList.remove('bad');de.classList.remove('show');setTimeout(draw)};
   if(di.value&&!okDate())di.value='';draw();try{const d=JSON.parse(sessionStorage.getItem('hp-draft')||'null');if(d&&d.time){const r=pills.querySelector(`input[value="${d.time}"]:not(:disabled)`);if(r)r.checked=true}}catch(e){}}
  return api})();
 if(document.getElementById('bkcards')){const days=document.getElementById('caldays'),mt=document.getElementById('calmonth'),pv=document.getElementById('calprev'),nx=document.getElementById('calnext'),ul=document.getElementById('bkcards'),em=document.getElementById('bkempty'),more=document.getElementById('bkmore');
