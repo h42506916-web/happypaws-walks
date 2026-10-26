@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://h42506916-web.github.io/happypaws-walks/sitemap.xml
