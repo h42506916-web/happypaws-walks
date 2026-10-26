@@ -4,7 +4,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 $$('.reveal').forEach(el=>reduce?el.classList.add('in'):io.observe(el));
 const buddy=$('#buddy'),trick=buddy.querySelector('.trick'),eyes=buddy.querySelector('.eyes'),svg=buddy.querySelector('svg'),bubble=$('#bubble');
-const XP={explore:'curious',top:'happy',grow:'excited',expect:'curious',ask:'happy',calendar:'excited',book:'excited',faq:'curious',qr:'happy'};let mood='neutral',moodT;
+const XP={explore:'curious',top:'happy',grow:'excited',calendar:'excited',book:'excited',faq:'curious',qr:'happy'};let mood='neutral',moodT;
 function feel(m,ms){svg.classList.remove('x-'+mood);mood=m;svg.classList.add('x-'+m);clearTimeout(moodT);if(ms)moodT=setTimeout(()=>feel(base,0),ms)}
 let base='neutral';function setBase(m){base=m;if(!moodT||mood===base)feel(m,0)}
 let bt;function say(t){bubble.textContent=t;bubble.classList.add('show');clearTimeout(bt);bt=setTimeout(()=>bubble.classList.remove('show'),3000)}
@@ -68,7 +68,6 @@ function upd(){const vh=innerHeight,r=grow.getBoundingClientRect(),p=Math.min(1,
 addEventListener('scroll',()=>{if(!t){t=true;requestAnimationFrame(upd)}},{passive:true});addEventListener('resize',upd);upd()}
 
 // active tab is set per page in the HTML (aria-current="page")
-if(document.getElementById('qa')){const q=document.getElementById('qa'),qq=document.getElementById('qq'),fd=qq.closest('.field');document.querySelectorAll('.qchip').forEach(c=>c.addEventListener('click',()=>{qq.value=c.textContent;fd.classList.remove('bad');qq.focus()}));qq.addEventListener('input',()=>{if(qq.value.trim())fd.classList.remove('bad')});q.addEventListener('submit',e=>{e.preventDefault();if(!qq.value.trim()){fd.classList.add('bad');qq.focus();return}q.style.display='none';const t=document.getElementById('qthanks');t.style.display='block';t.focus({preventScroll:true})});document.getElementById('qagain').addEventListener('click',()=>{q.reset();document.getElementById('qthanks').style.display='none';q.style.display='';qq.focus()})}
 
 if(document.getElementById('caldays')){const days=document.getElementById('caldays'),mt=document.getElementById('calmonth'),pv=document.getElementById('calprev'),nx=document.getElementById('calnext'),panel=document.getElementById('calpanel'),wrap=panel.parentNode,F=document.getElementById('f'),T=document.getElementById('thanks'),chip=document.getElementById('dchip'),chipT=document.getElementById('dchip-t'),fdate=document.getElementById('fdate'),td=document.getElementById('thanks-d');
  const MN=['January','February','March','April','May','June','July','August','September','October','November','December'],DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
