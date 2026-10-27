@@ -140,3 +140,16 @@ if(document.getElementById('bkcards')){const days=document.getElementById('calda
     try{localStorage.setItem('hp-bookings',JSON.stringify(HPB.load().filter(b=>b.id!==bk.id)))}catch(x){}all();msg.className='bkmsg ok';msg.textContent='Walk cancelled. '+HPB.dl(bk.date)+' at '+HPB.tl(bk.time)+' has been cancelled and Happy Paws has been told.';if(typeof say==='function'){say('Walk cancelled');feel('surprised',1200)}(ul.querySelector('.x')||em.querySelector('a')).focus()})
    .catch(()=>{list();msg.className='bkmsg bad';msg.textContent="Couldn't cancel right now. Please check your connection and try again.";const nl=ul.querySelector(`[data-id="${li.dataset.id}"] .x`);if(nl)nl.focus()})}});
  addEventListener('storage',all);all()}
+
+{const nv=document.getElementById('nav'),mt=document.getElementById('mtog');if(nv&&mt){const set=o=>{nv.classList.toggle('open',o);mt.setAttribute('aria-expanded',o);mt.setAttribute('aria-label',o?'Close menu':'Menu')};mt.addEventListener('click',e=>{e.stopPropagation();set(!nv.classList.contains('open'))});document.addEventListener('click',e=>{if(!nv.contains(e.target))set(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nv.classList.contains('open')){set(false);mt.focus()}})}}
+document.querySelectorAll('form.qf').forEach(qf=>{const sec=qf.parentNode,thx=sec.querySelector('.qthx'),qe=qf.querySelector('.qe'),btn=qf.querySelector('button[type=submit]'),svc=qf.dataset.service;let busy=false;
+ const val=n=>(qf.elements[n]&&qf.elements[n].value||'').trim();
+ const chk=i=>{let ok=i.value.trim().length>0;if(i.type==='tel')ok=/^(\+?61|0)4\d{8}$/.test(i.value.replace(/[\s()-]/g,''));const fd=i.closest('.field');fd.classList.toggle('bad',!ok);fd.classList.toggle('ok',ok);i.setAttribute('aria-invalid',!ok);return ok};
+ const req=[...qf.querySelectorAll('[required]')];req.forEach(i=>{i.addEventListener('blur',()=>{if(i.value)chk(i)});i.addEventListener('input',()=>{if(i.closest('.field').classList.contains('bad'))chk(i)})});
+ qf.addEventListener('submit',e=>{e.preventDefault();if(busy)return;let first=null;req.forEach(i=>{if(!chk(i)&&!first)first=i});if(first){first.focus();return}
+  busy=true;btn.disabled=true;btn.textContent='Sending…';qe.classList.remove('show');
+  const data={_subject:'Happy Paws QUOTE REQUEST - '+svc,_template:'table',_captcha:'false',_honey:val('_honey'),Service:svc,Name:val('name'),Phone:val('phone'),'Suburb or street':val('where'),'What they need':val('need'),'Preferred day':val('day')||'Any day',Notes:val('notes')||'None'};
+  const fail=()=>{busy=false;btn.disabled=false;btn.textContent='Request a quote';qe.classList.add('show')};
+  fetch('https://formsubmit.co/ajax/h.bastian1@icloud.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false')&&!/activat/i.test(j.message||''))throw 0;
+   busy=false;qf.hidden=true;thx.hidden=false;thx.focus({preventScroll:true});thx.scrollIntoView({block:'center'})}).catch(fail)});
+ thx.querySelector('.qagain').addEventListener('click',()=>{qf.reset();qf.querySelectorAll('.field').forEach(f=>f.classList.remove('ok','bad'));btn.disabled=false;btn.textContent='Request a quote';thx.hidden=true;qf.hidden=false;qf.elements.name.focus()})});
