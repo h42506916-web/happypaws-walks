@@ -21,7 +21,7 @@
 <section id="book" class="alt" data-say="Let's go walkies!" aria-labelledby="book-h">
   <p class="eyebrow reveal">Booking</p>
   <h2 id="book-h" class="reveal scale">Book your pup's adventure.</h2>
-  <p class="sub reveal d1">One hour walks: $20 for 1 dog, $30 for 2. Monday to Saturday, 4pm to 6pm. Choose a date and time, tell us about your pup, and I'll confirm your walk. The booking form is the only way to get in touch for now.</p>
+  <p class="sub reveal d1">One hour walks: $20 for 1 dog, $30 for 2, $50 for 3. Monday to Saturday, 4pm to 6pm. Choose a date and time, tell us about your pup, and I'll confirm your walk. The booking form is the only way to get in touch for now.</p>
   <form id="f" class="reveal d1" novalidate>
     <div class="formhead" id="fh"><svg class="hm " viewBox="-6 -6 112 112" aria-hidden="true" focusable="false"><use href="#heart"/></svg>Tell us about your pup</div>
     
@@ -31,7 +31,7 @@
     <div class="field" id="date-f"><label for="date">Date</label><input type="date" id="date" name="date" required aria-describedby="date-e"><p class="err" id="date-e" aria-live="polite">Please choose a date.</p></div>
     <fieldset class="field slots" id="time-f" aria-describedby="time-e"><legend>Time</legend><div class="pills" id="pills"></div><p class="err" id="time-e" aria-live="polite">Please choose a time.</p></fieldset>
     <p class="err dup" id="dup-e" role="alert">You already have a walk booked for that date and time. Please pick another slot.</p>
-    <div class="row"><div class="field"><label for="dogs">Number of dogs</label><select id="dogs" name="dogs"><option value="1" selected>1 dog ($20)</option><option value="2">2 dogs ($30)</option></select><p class="hint dh">For 3 or more dogs, please book separately or mention it in the notes.</p></div>
+    <div class="row"><div class="field"><label for="dogs">Number of dogs</label><select id="dogs" name="dogs"><option value="1" selected>1 dog ($20)</option><option value="2">2 dogs ($30)</option><option value="3">3 dogs ($50)</option></select><p class="hint dh">For 4 or more dogs, please mention it in the notes.</p></div>
     <div class="field"><label for="size">Dog size <span class="opt">(optional)</span></label><select id="size" name="size"><option value="">Choose</option><option>Small</option><option>Medium</option><option>Large</option><option>Mixed sizes</option></select></div></div>
     <div class="row"><div class="field"><label for="age">Age <span class="opt">(optional)</span></label><select id="age" name="age"><option value="">Choose</option><option>Puppy (under 1)</option><option>Adult</option><option>Senior</option></select></div>
     <div class="field"><label for="temper">Temperament <span class="opt">(optional)</span></label><select id="temper" name="temper"><option value="">Choose</option><option>Easy-going</option><option>Energetic</option><option>Shy or anxious</option><option>Reactive to dogs or people</option><option>Rescue, still settling in</option></select></div></div>
