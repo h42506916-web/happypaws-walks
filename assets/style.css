@@ -302,10 +302,6 @@ nav .allsvc{font-size:.85rem;color:var(--muted)}
 .notinc li{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.95rem}.notinc .tk{background:#f3f4f6;stroke:#8a8f99;width:26px;height:26px;padding:5px}
 .svnote{margin:18px 0 0;padding:14px 18px;border-radius:16px;background:rgba(200,40,46,.08);color:var(--ink);max-width:980px;width:100%;text-align:center}
 .svnote b{color:var(--accent)}
-.steps{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:900px;counter-reset:s}
-.steps li{display:flex;flex-direction:column;gap:6px;padding:24px;border:1px solid var(--line);border-radius:22px;background:#fff;text-align:left}
-.steps .sn{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;margin-bottom:6px}
-.steps b{font-size:1.15rem;color:var(--ink)}.steps li>span:last-child{color:var(--muted);font-size:.95rem}
 .prcards.one{grid-template-columns:1fr;max-width:420px}.prcards.one .prcard{text-align:center;align-items:center}.prcards.one .prcard b{color:var(--accent)}
 #sf .psum{margin:18px 0 12px;text-align:center;color:var(--muted);font-size:15px}#sf .psum b{color:var(--ink);font-size:17px}
 .cks{border:0;padding:0;margin:0 0 16px}.cks legend,.slots legend{font-weight:600;font-size:14px;margin-bottom:8px;padding:0}
@@ -317,8 +313,7 @@ nav .allsvc{font-size:.85rem;color:var(--muted)}
 .sthx .hm{width:64px;height:64px}.sthx strong{display:block;font-size:1.4rem;margin:10px 0 6px}.sthx p{color:var(--muted)}
 .sthx .tacts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
 .bkempty{text-align:center}
-@media(max-width:820px){.svgrid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}}
-@media(max-width:520px){.svgrid{gap:8px}.svgrid li{padding:14px;font-size:.92rem}.notinc ul{grid-template-columns:1fr}.ckgrid{grid-template-columns:1fr}}
+@media(max-width:820px){.svgrid{grid-template-columns:1fr 1fr}@media(max-width:520px){.svgrid{gap:8px}.svgrid li{padding:14px;font-size:.92rem}.notinc ul{grid-template-columns:1fr}.ckgrid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.svgrid li{transition:none}.svgrid li:hover{transform:none}}
 #sf .ck input[type=checkbox]{-webkit-appearance:auto;appearance:auto;width:20px;height:20px;min-height:0;padding:0;margin:0;border:0;border-radius:4px;background:none;box-shadow:none;accent-color:var(--accent);flex:none}
 

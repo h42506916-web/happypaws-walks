@@ -4,7 +4,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 $$('.reveal').forEach(el=>reduce?el.classList.add('in'):io.observe(el));
 const buddy=$('#buddy'),trick=buddy.querySelector('.trick'),eyes=buddy.querySelector('.eyes'),svg=buddy.querySelector('svg'),bubble=$('#bubble');
-const XP={'hh-top':'happy','cc-top':'happy','hh-inc':'curious','cc-inc':'curious','hh-how':'happy','cc-how':'happy','hh-price':'excited','cc-price':'excited','hh-explore':'curious','cc-explore':'curious','hh-book':'excited','cc-book':'excited','hh-calendar':'excited','cc-calendar':'excited','hh-faq':'curious','cc-faq':'curious',explore:'curious',top:'happy',grow:'excited',calendar:'excited',book:'excited',faq:'curious'};let mood='neutral',moodT;
+const XP={'hh-top':'happy','cc-top':'happy','hh-inc':'curious','cc-inc':'curious','hh-price':'excited','cc-price':'excited','hh-explore':'curious','cc-explore':'curious','hh-book':'excited','cc-book':'excited','hh-calendar':'excited','cc-calendar':'excited','hh-faq':'curious','cc-faq':'curious',explore:'curious',top:'happy',grow:'excited',calendar:'excited',book:'excited',faq:'curious'};let mood='neutral',moodT;
 function feel(m,ms){svg.classList.remove('x-'+mood);mood=m;svg.classList.add('x-'+m);clearTimeout(moodT);if(ms)moodT=setTimeout(()=>feel(base,0),ms)}
 let base='neutral';function setBase(m){base=m;if(!moodT||mood===base)feel(m,0)}
 let bt;function say(t){bubble.textContent=t;bubble.classList.add('show');clearTimeout(bt);bt=setTimeout(()=>bubble.classList.remove('show'),3000)}
