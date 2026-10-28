@@ -4,7 +4,7 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 $$('.reveal').forEach(el=>reduce?el.classList.add('in'):io.observe(el));
 const buddy=$('#buddy'),trick=buddy.querySelector('.trick'),eyes=buddy.querySelector('.eyes'),svg=buddy.querySelector('svg'),bubble=$('#bubble');
-const XP={explore:'curious',top:'happy',grow:'excited',calendar:'excited',book:'excited',faq:'curious'};let mood='neutral',moodT;
+const XP={'hh-top':'happy','cc-top':'happy','hh-inc':'curious','cc-inc':'curious','hh-how':'happy','cc-how':'happy','hh-price':'excited','cc-price':'excited','hh-explore':'curious','cc-explore':'curious','hh-book':'excited','cc-book':'excited','hh-calendar':'excited','cc-calendar':'excited','hh-faq':'curious','cc-faq':'curious',explore:'curious',top:'happy',grow:'excited',calendar:'excited',book:'excited',faq:'curious'};let mood='neutral',moodT;
 function feel(m,ms){svg.classList.remove('x-'+mood);mood=m;svg.classList.add('x-'+m);clearTimeout(moodT);if(ms)moodT=setTimeout(()=>feel(base,0),ms)}
 let base='neutral';function setBase(m){base=m;if(!moodT||mood===base)feel(m,0)}
 let bt;function say(t){bubble.textContent=t;bubble.classList.add('show');clearTimeout(bt);bt=setTimeout(()=>bubble.classList.remove('show'),3000)}
@@ -154,3 +154,63 @@ document.querySelectorAll('form.qf').forEach(qf=>{const sec=qf.parentNode,thx=se
   fetch('https://formsubmit.co/ajax/h.bastian1@icloud.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false')&&!/activat/i.test(j.message||''))throw 0;
    busy=false;qf.hidden=true;thx.hidden=false;thx.focus({preventScroll:true});thx.scrollIntoView({block:'center'})}).catch(fail)});
  thx.querySelector('.qagain').addEventListener('click',()=>{qf.reset();qf.querySelectorAll('.field').forEach(f=>f.classList.remove('ok','bad'));btn.disabled=false;btn.textContent='Request a quote';thx.hidden=true;qf.hidden=false;qf.elements.name.focus()})});
+
+
+// ---- v8 service sites (home help / car care): booking + calendar, stored per service
+(()=>{const sf=document.getElementById('sf'),sc=document.getElementById('scal');if(!sf&&!sc)return;
+ const host=sf||sc,SV=host.dataset.svc,K=host.dataset.key,PX=host.dataset.px,FSU='https://formsubmit.co/ajax/h.bastian1@icloud.com';
+ const MF=['January','February','March','April','May','June','July','August','September','October','November','December'],MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ const TIMES={morning:'Morning',afternoon:'Afternoon',late:'Late afternoon'};
+ const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)},iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+ const dl=s=>{const d=pd(s);return DN[d.getDay()]+' '+d.getDate()+' '+MF[d.getMonth()]},esc=s=>String(s||'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+ const load=()=>{try{const a=JSON.parse(localStorage.getItem(K)||'[]');return Array.isArray(a)?a.filter(b=>b&&/^\d{4}-\d\d-\d\d$/.test(b.date)&&TIMES[b.time]):[]}catch(e){return[]}},store=a=>{try{localStorage.setItem(K,JSON.stringify(a))}catch(e){}};
+ const t0=new Date(),today=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate()),tiso=iso(today);
+ const S=(m,x)=>{try{if(typeof say==='function')say(m);if(x&&typeof feel==='function')feel(x,1500)}catch(e){}};
+ const post=d=>fetch(FSU,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(d)}).then(r=>{if(!r.ok)throw 0;return r.json().catch(()=>({}))}).then(j=>{if(j&&(j.success===false||j.success==='false'))throw 0;return j});
+ if(sf){const di=sf.elements.date,btn=sf.querySelector('button[type=submit]'),se=document.getElementById('s-send-e'),thx=document.getElementById('sthanks');let busy=false;
+  const mn=new Date(today);mn.setDate(mn.getDate()+1);const mx=new Date(today);mx.setDate(mx.getDate()+60);di.min=iso(mn);di.max=iso(mx);
+  const val=n=>(sf.elements[n]&&sf.elements[n].value||'').trim(),jobs=()=>[...sf.querySelectorAll('input[name=job]:checked')].map(i=>i.value),tm=()=>{const r=sf.querySelector('input[name=time]:checked');return r?r.value:''};
+  const mark=(el,ok,msg)=>{const fd=el.closest('.field');fd.classList.toggle('bad',!ok);fd.classList.toggle('ok',ok);if(msg){const e=fd.querySelector('.err');if(e)e.textContent=msg}const i=fd.querySelector('input,textarea');if(i)i.setAttribute('aria-invalid',!ok);return ok};
+  const chk={name:()=>mark(sf.elements.name,!!val('name')),phone:()=>mark(sf.elements.phone,/^(\+?61|0)4\d{8}$/.test(val('phone').replace(/[\s()-]/g,''))),where:()=>mark(sf.elements.where,!!val('where')),
+   job:()=>mark(document.getElementById('s-job-f').querySelector('input'),jobs().length>0),
+   date:()=>{const v=di.value,sun=v&&pd(v).getDay()===0,ok=!!v&&!sun&&v>=di.min&&v<=di.max;return mark(di,ok,sun?"I don't work on Sundays. Please choose Monday to Saturday.":v&&!ok?'Please choose a date in the next 60 days.':'Please choose a date.')},
+   time:()=>mark(document.getElementById('s-time-f').querySelector('input'),!!tm())};
+  ['name','phone','where'].forEach(n=>{const i=sf.elements[n];i.addEventListener('blur',()=>{if(i.value)chk[n]()});i.addEventListener('input',()=>{if(i.closest('.field').classList.contains('bad'))chk[n]()})});
+  di.addEventListener('change',chk.date);sf.querySelectorAll('input[name=job]').forEach(i=>i.addEventListener('change',()=>{if(document.getElementById('s-job-f').classList.contains('bad'))chk.job()}));sf.querySelectorAll('input[name=time]').forEach(i=>i.addEventListener('change',chk.time));
+  const nc=document.getElementById('s-notes-c'),nt=sf.elements.notes;if(nc)nt.addEventListener('input',()=>nc.textContent=nt.value.length+' / 600');
+  const mkref=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',u=new Uint8Array(4);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<4;i++)u[i]=Math.random()*256}return PX+'-'+[...u].map(x=>A[x%A.length]).join('')};
+  sf.addEventListener('submit',e=>{e.preventDefault();if(busy)return;let first=null;['name','phone','where','job','date','time'].forEach(n=>{if(!chk[n]()&&!first)first=n});
+   if(first){const el=first==='job'?sf.querySelector('input[name=job]'):first==='time'?sf.querySelector('input[name=time]'):sf.elements[first];el.focus();S('Almost there!','surprised');return}
+   if(val('_honey'))return;
+   busy=true;btn.disabled=true;btn.textContent='Sending…';se.classList.remove('show');const ref=mkref(),j=jobs();
+   const data={_subject:'Happy Paws BOOKING REQUEST - '+SV,_template:'table',_captcha:'false',_honey:'',Service:SV,'Booking ref':ref,Name:val('name'),Phone:val('phone'),'Suburb or street':val('where'),'What they need':j.join(', '),'Preferred date':dl(di.value),'Preferred time':TIMES[tm()],Notes:val('notes')||'None','First time':sf.elements.first.checked?'Yes':'No',Price:'Free quote'};
+   post(data).then(()=>{const a=load();a.push({id:Date.now().toString(36),ref,date:di.value,time:tm(),jobs:j.join(', ').slice(0,200)});store(a);
+     document.getElementById('st-d').textContent=dl(di.value)+', '+TIMES[tm()].toLowerCase();document.getElementById('st-r').textContent=ref;
+     busy=false;sf.hidden=true;thx.hidden=false;thx.focus({preventScroll:true});thx.scrollIntoView({block:'center'});S('Request sent!','excited')})
+    .catch(()=>{busy=false;btn.disabled=false;btn.textContent='Send request';se.classList.add('show');S('Oops, try again','sad')})});
+  document.getElementById('sagain').addEventListener('click',()=>{sf.reset();sf.querySelectorAll('.field').forEach(f=>f.classList.remove('ok','bad'));btn.disabled=false;btn.textContent='Send request';thx.hidden=true;sf.hidden=false;sf.elements.name.focus()})}
+ if(sc){const days=document.getElementById('scaldays'),mt=document.getElementById('scalmonth'),pv=document.getElementById('scalprev'),nx=document.getElementById('scalnext'),ul=document.getElementById('sbkcards'),em=document.getElementById('sbkempty'),more=document.getElementById('sbkmore'),msg=document.getElementById('sbkmsg'),BK=sc.dataset.book,NOUN=sc.dataset.noun;
+  const sorted=()=>load().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)),mi=(y,m)=>y*12+m;let vy=today.getFullYear(),vm=today.getMonth();
+  {const up=sorted().find(b=>b.date>=tiso);if(up){const d=pd(up.date);vy=d.getFullYear();vm=d.getMonth()}}
+  const range=()=>{let lo=mi(today.getFullYear(),today.getMonth()),hi=lo+2;sorted().forEach(b=>{const d=pd(b.date),k=mi(d.getFullYear(),d.getMonth());lo=Math.min(lo,k);hi=Math.max(hi,k)});return[lo,hi]};
+  function grid(){const set=new Set(load().map(b=>b.date)),[lo,hi]=range();mt.textContent=MF[vm]+' '+vy;pv.disabled=mi(vy,vm)<=lo;nx.disabled=mi(vy,vm)>=hi;
+   const lead=(new Date(vy,vm,1).getDay()+6)%7,n=new Date(vy,vm+1,0).getDate();let h='',c=0;
+   for(;c<lead+n;){h+='<div role="row" class="calrow">';for(let k=0;k<7;k++,c++){const dn=c-lead+1;if(dn<1||dn>n){h+='<span role="gridcell"><span class="day out" aria-hidden="true"></span></span>';continue}
+    const d=new Date(vy,vm,dn),s=iso(d),bk=set.has(s),ist=s===tiso,past=d<today;
+    h+=`<span role="gridcell">${bk?`<button type="button" class="day booked${past?' past':''}${ist?' today':''}" data-iso="${s}" aria-label="${dl(s)}, ${NOUN} requested">${dn}</button>`:`<span class="day${ist?' today':''}" style="cursor:default;display:grid;place-items:center" aria-label="${dl(s)}${ist?', today':''}">${dn}</span>`}</span>`}h+='</div>'}
+   days.innerHTML=h}
+  function list(){const a=sorted();em.hidden=!!a.length;more.hidden=!a.length;
+   ul.innerHTML=a.map(b=>{const d=pd(b.date),past=b.date<tiso;return `<li class="bk${past?' past':''}" data-id="${esc(b.id)}" data-iso="${b.date}"><div class="dd" aria-hidden="true"><small>${DS[d.getDay()]}</small><b>${d.getDate()}</b><small>${MS[d.getMonth()]}</small></div><div class="bi"><strong>${esc(SV)}</strong><span>${dl(b.date)}, ${TIMES[b.time].toLowerCase()}${past?' · Past':''}</span>${b.jobs?`<span>${esc(b.jobs)}</span>`:''}<span class="ref">Ref ${esc(b.ref)}</span></div>${past?'':`<button type="button" class="x" aria-label="Cancel ${NOUN} on ${dl(b.date)}">Cancel</button>`}</li>`}).join('')}
+  const all=()=>{grid();list()};
+  pv.addEventListener('click',()=>{const d=new Date(vy,vm-1,1);vy=d.getFullYear();vm=d.getMonth();grid()});nx.addEventListener('click',()=>{const d=new Date(vy,vm+1,1);vy=d.getFullYear();vm=d.getMonth();grid()});
+  days.addEventListener('click',e=>{const b=e.target.closest('.day.booked');if(!b)return;const li=ul.querySelector(`[data-iso="${b.dataset.iso}"]`);if(li){li.classList.add('hl');li.scrollIntoView({block:'center'});setTimeout(()=>li.classList.remove('hl'),2400)}});
+  ul.addEventListener('click',e=>{const li=e.target.closest('.bk');if(!li)return;
+   if(e.target.closest('.x')){const cf=document.createElement('div');cf.className='cf';cf.innerHTML=`<span>Cancel this ${NOUN}?</span><button type="button" class="yes">Yes, cancel</button><button type="button" class="no">Keep it</button>`;e.target.closest('.x').replaceWith(cf);cf.querySelector('.no').focus();return}
+   if(e.target.closest('.no')){list();return}
+   if(e.target.closest('.yes')){const y=e.target.closest('.yes'),cf=y.closest('.cf'),bk=load().find(b=>b.id===li.dataset.id);if(!bk){all();return}
+    cf.querySelectorAll('button').forEach(x=>x.disabled=true);y.textContent='Cancelling…';msg.className='bkmsg';msg.textContent='';
+    post({_subject:'Happy Paws booking CANCELLED - '+SV,_template:'table',_captcha:'false',_honey:'',Status:'Cancelled',Service:SV,'Booking ref':bk.ref,'Preferred date':dl(bk.date),'Preferred time':TIMES[bk.time],'What they need':bk.jobs||'Not given'})
+     .then(()=>{store(load().filter(b=>b.id!==bk.id));all();msg.className='bkmsg ok';msg.textContent='Cancelled. '+dl(bk.date)+' has been cancelled and Happy Paws has been told.';S('Cancelled','surprised')})
+     .catch(()=>{list();msg.className='bkmsg bad';msg.textContent="Couldn't cancel right now. Please check your connection and try again."})}});
+  addEventListener('storage',all);all();void BK}
+})();
