@@ -258,4 +258,36 @@ body.pg-choose #choose{width:100%;padding-top:120px}
 .chcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 28px rgba(11,15,25,.08)}.chcard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:700px){.chcards{grid-template-columns:1fr;gap:12px}.chcard{min-height:110px;padding:20px}}
 @media(prefers-reduced-motion:reduce){.chcard{transition:none}.chcard:hover{transform:none}}
+/* v8 pizzazz: chooser only */
+body.pg-choose #choose{position:relative;isolation:isolate}
+.chbg{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.chbg i{position:absolute;border-radius:50%;filter:blur(48px);opacity:.55;animation:blob 18s ease-in-out infinite alternate}
+.chbg .b1{width:340px;height:340px;left:8%;top:12%;background:rgba(200,40,46,.16)}
+.chbg .b2{width:280px;height:280px;right:6%;top:30%;background:rgba(11,15,25,.05);animation-duration:22s;animation-delay:-6s}
+.chbg .b3{width:220px;height:220px;left:42%;bottom:2%;background:rgba(200,40,46,.10);animation-duration:26s;animation-delay:-12s}
+@keyframes blob{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-24px) scale(1.08)}100%{transform:translate(-24px,18px) scale(.95)}}
+#choose .hl{color:var(--accent);position:relative;white-space:nowrap}
+#choose .hl::after{content:"";position:absolute;left:2%;right:2%;bottom:.04em;height:.09em;border-radius:1em;background:var(--accent);opacity:.35;transform:scaleX(0);transform-origin:left;transition:transform .8s .6s var(--ease)}
+#choose .reveal.in .hl::after,html:not(.js) #choose .hl::after{transform:scaleX(1)}
+.chsub{margin:14px 0 0;color:var(--muted);font-size:1.1rem}
+.chcards .chcard{position:relative;overflow:hidden;gap:6px}
+html.js .chcards .chcard{opacity:0;transform:translateY(22px)}
+html.js .chcards.in .chcard{opacity:1;transform:none;transition:opacity .6s calc(var(--i)*110ms + 150ms) var(--ease),transform .6s calc(var(--i)*110ms + 150ms) var(--ease),border-color .25s,box-shadow .25s}
+.chcard::after{content:none}
+.chcard .go{font-style:normal;color:var(--accent);font-weight:700;font-size:1.2rem;transition:transform .25s var(--ease)}
+.chcard::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-18deg);pointer-events:none}
+.chcard .cic{color:var(--accent)}
+.cic{display:grid;place-items:center;width:64px;height:64px;margin-bottom:6px;border-radius:20px;background:rgba(200,40,46,.08);color:var(--accent);transition:transform .35s var(--ease),background .25s}
+.ci{width:36px;height:36px}.ci .spk{transform-origin:38px 10px}
+html.js .chcards.in .chcard:hover,html.js .chcards.in .chcard:focus-visible{transform:translateY(-6px);transition-delay:0s}
+.chcard:hover,.chcard:focus-visible{border-color:var(--accent);box-shadow:0 18px 40px rgba(200,40,46,.16),0 4px 12px rgba(11,15,25,.05)}
+.chcard:hover .go,.chcard:focus-visible .go{transform:translateX(6px)}
+.chcard:hover .cic,.chcard:focus-visible .cic{transform:scale(1.08) rotate(-4deg);background:rgba(200,40,46,.13)}
+.chcard:hover::before{left:130%;transition:left .8s var(--ease)}
+.chcard:hover .spk{animation:twk .9s ease-in-out}
+@keyframes twk{50%{transform:scale(1.5) rotate(45deg)}}
+.chcard:active{transform:translateY(-2px) scale(.985)!important}
+@media(max-width:700px){.chcard{text-align:left;column-gap:14px;row-gap:2px;min-height:96px}.chcard .cic{width:52px;height:52px;margin:0;border-radius:16px;grid-row:span 2}.ci{width:30px;height:30px}
+ .chcard{display:grid;grid-template-columns:52px 1fr auto;align-items:center}.chcard b{grid-column:2;font-size:1.2rem}.chcard>span:not(.cic){grid-column:2}.chcard .go{grid-column:3;grid-row:1/span 2}.chbg .b1{width:220px;height:220px}.chbg .b2,.chbg .b3{width:180px;height:180px}.chsub{font-size:1rem}}
+@media(prefers-reduced-motion:reduce){.chbg i{animation:none}html.js .chcards .chcard{opacity:1;transform:none;transition:none}.chcard::before{display:none}.chcard .go,.cic,#choose .hl::after{transition:none}#choose .hl::after{transform:scaleX(1)}.chcard:hover .spk{animation:none}html.js .chcards.in .chcard:hover{transform:none}}
 nav .allsvc{font-size:.85rem;color:var(--muted)}

@@ -25,6 +25,7 @@ look(-200,-120);
 setInterval(()=>{if(!document.hidden&&!/spin|flip|hop/.test(trick.className))doTrick('wiggle')},9000);
 let cur=null;const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.target!==cur){const first=cur===null;cur=e.target;const xm=XP[e.target.id]||(e.target.tagName==='FOOTER'?'happy':'neutral');if(base!=='joy'&&xm!=='neutral')feel(xm,2800);say(e.target.dataset.say);if(!first)doTrick()}}),{rootMargin:'-45% 0px -45% 0px'});
 $$('[data-say]').forEach(s=>so.observe(s));
+{const cc=$$('.chcard');if(cc.length){const SAY=['Walkies!','Green thumbs!','Shiny!'];cc.forEach((c,i)=>{c.addEventListener('pointerenter',()=>{const r=c.getBoundingClientRect(),b=svg.getBoundingClientRect();look(r.left+r.width/2-b.left-b.width/2,r.top+r.height/2-b.top-b.height/2);feel('happy',1800);say(SAY[i]||'Yay!');if(!reduce)doTrick('hop')});c.addEventListener('focus',()=>{feel('happy',1800);say(SAY[i]||'Yay!')});c.addEventListener('click',e=>{if(reduce||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();feel('excited',600);doTrick('flip');setTimeout(()=>{location.href=c.href},380)})})}}
 // mobile: tuck buddy away while typing so it never covers fields or the Send button
 const small=()=>innerWidth<600;
 $$('input,select,textarea').forEach(i=>{i.addEventListener('focus',()=>{if(small())buddy.classList.add('away')});i.addEventListener('blur',()=>setTimeout(()=>{if(!f||!f.contains(document.activeElement))buddy.classList.remove('away')},50))});
