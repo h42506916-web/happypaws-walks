@@ -248,3 +248,14 @@ nav.open .mtog span:first-child{transform:translateY(3.5px) rotate(45deg)}nav.op
 @media(min-width:981px){.links{gap:22px;font-size:.88rem}}
 .flinks{flex-wrap:wrap;gap:4px 18px;max-width:560px;margin:14px auto}.flinks a{display:inline-flex;align-items:center;min-height:32px}
 nav .lw{white-space:pre}
+
+body.pg-choose main{min-height:calc(100vh - 140px);min-height:calc(100svh - 140px);display:flex;align-items:center}
+body.pg-choose #choose{width:100%;padding-top:120px}
+.chcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:900px;margin-top:34px}
+.chcard{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;min-height:190px;padding:28px 20px;border:1px solid var(--line);border-radius:24px;background:#fff;color:var(--ink);text-decoration:none;text-align:center;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.chcard b{font-size:1.4rem;letter-spacing:-.015em}.chcard span{color:var(--muted);font-size:.95rem}
+.chcard::after{content:"\2192";color:var(--accent);font-weight:700;font-size:1.2rem}
+.chcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 28px rgba(11,15,25,.08)}.chcard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(max-width:700px){.chcards{grid-template-columns:1fr;gap:12px}.chcard{min-height:110px;padding:20px}}
+@media(prefers-reduced-motion:reduce){.chcard{transition:none}.chcard:hover{transform:none}}
+nav .allsvc{font-size:.85rem;color:var(--muted)}
