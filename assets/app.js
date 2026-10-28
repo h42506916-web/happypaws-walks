@@ -179,13 +179,14 @@ document.querySelectorAll('form.qf').forEach(qf=>{const sec=qf.parentNode,thx=se
   di.addEventListener('change',chk.date);sf.querySelectorAll('input[name=job]').forEach(i=>i.addEventListener('change',()=>{if(document.getElementById('s-job-f').classList.contains('bad'))chk.job()}));sf.querySelectorAll('input[name=time]').forEach(i=>i.addEventListener('change',chk.time));
   const nc=document.getElementById('s-notes-c'),nt=sf.elements.notes;if(nc)nt.addEventListener('input',()=>nc.textContent=nt.value.length+' / 600');
   const mkref=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789',u=new Uint8Array(4);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<4;i++)u[i]=Math.random()*256}return PX+'-'+[...u].map(x=>A[x%A.length]).join('')};
+  {const ps=document.getElementById('s-psum');if(ps)sf.querySelectorAll('input[name=job][data-price]').forEach(i=>i.addEventListener('change',()=>{ps.innerHTML='Price: <b>'+i.value+' $'+i.dataset.price+'</b>'}))}
   sf.addEventListener('submit',e=>{e.preventDefault();if(busy)return;let first=null;['name','phone','where','job','date','time'].forEach(n=>{if(!chk[n]()&&!first)first=n});
    if(first){const el=first==='job'?sf.querySelector('input[name=job]'):first==='time'?sf.querySelector('input[name=time]'):sf.elements[first];el.focus();S('Almost there!','surprised');return}
    if(val('_honey'))return;
-   busy=true;btn.disabled=true;btn.textContent='Sending…';se.classList.remove('show');const ref=mkref(),j=jobs();
-   const data={_subject:'Happy Paws BOOKING REQUEST - '+SV,_template:'table',_captcha:'false',_honey:'',Service:SV,'Booking ref':ref,Name:val('name'),Phone:val('phone'),'Suburb or street':val('where'),'What they need':j.join(', '),'Preferred date':dl(di.value),'Preferred time':TIMES[tm()],Notes:val('notes')||'None','First time':sf.elements.first.checked?'Yes':'No',Price:'Free quote'};
-   post(data).then(()=>{const a=load();a.push({id:Date.now().toString(36),ref,date:di.value,time:tm(),jobs:j.join(', ').slice(0,200)});store(a);
-     document.getElementById('st-d').textContent=dl(di.value)+', '+TIMES[tm()].toLowerCase();document.getElementById('st-r').textContent=ref;
+   busy=true;btn.disabled=true;btn.textContent='Sending…';se.classList.remove('show');const ref=mkref(),j=jobs(),pk=sf.querySelector('input[name=job][data-price]:checked'),PR=pk?pk.value+' $'+pk.dataset.price:sf.dataset.price;
+   const data={_subject:'Happy Paws BOOKING REQUEST - '+SV,_template:'table',_captcha:'false',_honey:'',Service:SV,'Booking ref':ref,Name:val('name'),Phone:val('phone'),'Suburb or street':val('where'),'What they need':j.join(', '),...(pk?{Package:pk.value}:{}),'Preferred date':dl(di.value),'Preferred time':TIMES[tm()],Notes:val('notes')||'None','First time':sf.elements.first.checked?'Yes':'No',Price:PR};
+   post(data).then(()=>{const a=load();a.push({id:Date.now().toString(36),ref,date:di.value,time:tm(),jobs:(pk?PR:j.join(', ')).slice(0,200)});store(a);
+     document.getElementById('st-d').textContent=dl(di.value)+', '+TIMES[tm()].toLowerCase();document.getElementById('st-r').textContent=ref;const sp=document.getElementById('st-p');if(sp)sp.textContent=PR;
      busy=false;sf.hidden=true;thx.hidden=false;thx.focus({preventScroll:true});thx.scrollIntoView({block:'center'});S('Request sent!','excited')})
     .catch(()=>{busy=false;btn.disabled=false;btn.textContent='Send request';se.classList.add('show');S('Oops, try again','sad')})});
   document.getElementById('sagain').addEventListener('click',()=>{sf.reset();sf.querySelectorAll('.field').forEach(f=>f.classList.remove('ok','bad'));btn.disabled=false;btn.textContent='Send request';thx.hidden=true;sf.hidden=false;sf.elements.name.focus()})}
